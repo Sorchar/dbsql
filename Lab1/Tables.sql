@@ -87,3 +87,5 @@ CREATE TABLE RecommendedBranch(
  	PRIMARY KEY (student,course) 
  );
 
+
+
