@@ -13,7 +13,7 @@ CREATE TABLE Branches(
 );
 
 CREATE TABLE Courses( 
-	code TEXT NOT NULL, /* possibly char array*/
+	code CHAR(6) NOT NULL, /* possibly char array*/
 	name TEXT NOT NULL,
 	credits FLOAT NOT NULL,
 	department TEXT NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE Courses(
 );
 
 CREATE TABLE LimitedCourses(
-	code TEXT NOT NULL,
+	code CHAR(6) NOT NULL,
 	capacity INT CHECK (capacity>0),
 	PRIMARY KEY(code)
 );
@@ -40,7 +40,7 @@ CREATE TABLE Classifications(
 );
 
 CREATE TABLE Classified(
-	code TEXT REFERENCES Courses(code),
+	code CHAR(6) REFERENCES Courses(code),
 	classification TEXT REFERENCES Classifications(name),
 	PRIMARY KEY(code, classification)
 );
