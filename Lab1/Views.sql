@@ -15,3 +15,10 @@ CREATE VIEW PassedCourses AS
 SELECT student, course, credits 
 FROM Taken, Courses 
 WHERE grade <> 'U' AND course = code;
+
+CREATE VIEW Registrations AS
+SELECT student, course, status
+FROM Registered WHERE status = 'registered'
+UNION
+SELECT student, course, status
+FROM WaitingList WHERE status = 'waiting';
