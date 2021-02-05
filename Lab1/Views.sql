@@ -22,3 +22,4 @@ FROM Registered WHERE status = 'registered'
 UNION
 SELECT student, course, status
 FROM WaitingList WHERE status = 'waiting';
+/* not sure if correct havnt tested*/
