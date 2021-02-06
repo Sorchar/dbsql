@@ -21,7 +21,7 @@ CREATE TABLE Courses(
 );
 
 CREATE TABLE LimitedCourses(
-	code CHAR(6) NOT NULL,
+	code CHAR(6) REFERENCES Courses(code),
 	capacity INT CHECK (capacity>0),
 	PRIMARY KEY(code)
 );
