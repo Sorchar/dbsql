@@ -17,9 +17,9 @@ FROM Taken, Courses
 WHERE grade <> 'U' AND course = code;
 
 CREATE VIEW Registrations AS
-SELECT student, course, status
-FROM Registered WHERE status = 'registered'
+SELECT student, course, 'registered' as status
+FROM Registered 
 UNION
-SELECT student, course, status
-FROM WaitingList WHERE status = 'waiting';
-/* not sure if correct havnt tested*/
+SELECT student, course, 'waiting' as status
+FROM WaitingList;
+
