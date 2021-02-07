@@ -35,11 +35,14 @@ AND MandatoryBranch.program = BasicInformation.program
 EXCEPT SELECT student, course
 FROM PassedCourses;
 
-CREATE VIEW RecommendedCredit AS
+/*CREATE VIEW RecommendedCredit AS
 SELECT student, SUM (PassedCourses.credits)
 FROM PassedCourses, RecommendedBranch
 WHERE PassedCourses.course = RecommendedBranch.course
-ORDER BY student;
+GROUP BY PassedCourses.student
+ORDER BY student;*/
+
+
 CREATE VIEW PathToGraduation AS
 WITH stuID AS (SELECT idnr AS student FROM Students),
 
@@ -66,17 +69,17 @@ WITH stuID AS (SELECT idnr AS student FROM Students),
     WHERE classified.classification = 'seminar' AND PassedCourses.course = classified.code 
     GROUP BY student),
 	
-	recomendetCredits AS ( SELECT student, SUM(PassedCourses.credits) AS recommendedCourses
+	recommendedCredits AS ( SELECT student, SUM(PassedCourses.credits) AS recommendedCourses
     FROM PassedCourses, RecommendedBranch
         WHERE PassedCourses.course = RecommendedBranch.course
         GROUP BY student),
 	
 
     qualified AS (SELECT stuID.student, mandatoryLeft = 0
-    AND recommendedCredit >= 10 AND mathCredits >= 20 AND
+    AND recommendedCourses >= 10 AND mathCredits >= 20 AND
     researchCredits >= 10 AND seminarCourses >=1 AS qualified
-    FROM stuID, mandatoryLeft, RecommendedCredit, mathCredits, researchCredits,
-    seminarCourses WHERE stuID.student = mandatoryLeft.student AND stuID.student = RecommendedCredit.student
+    FROM stuID, mandatoryLeft, recommendedCredits, mathCredits, researchCredits,
+    seminarCourses WHERE stuID.student = mandatoryLeft.student AND stuID.student = recommendedCredits.student
     AND stuID.student = mathCredits.student AND stuID.student = researchCredits.student
     AND stuID.student = seminarCourses.student
     )
@@ -87,6 +90,6 @@ FROM stuID
     LEFT JOIN totalCredits ON stuID.student = totalCredits.student
     LEFT JOIN mandatoryLeft ON stuID.student = mandatoryLeft.student
     LEFT JOIN mathCredits ON stuID.student = mathCredits.student
-    LEFT JOIN researchCredits ON stuID.status = researchCredits.student
-    LEFT JOIN seminarCourses ON stuID.status = seminarCourses.status
+    LEFT JOIN researchCredits ON stuID.student = researchCredits.student
+    LEFT JOIN seminarCourses ON stuID.student = seminarCourses.student
     LEFT JOIN qualified ON stuID.student = qualified.student;
