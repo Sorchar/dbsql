@@ -1,0 +1,1 @@
+The test fails because one student lacks the recommended credits required in order to graduate but is qualified to graduate by the code. The problem is most likely somewhere in qualified and more specifically in the IN statement that is supposed to check if the student is in a branch. Not quite sure how to fix the issue.
