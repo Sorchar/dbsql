@@ -69,21 +69,22 @@ WITH stuID AS (SELECT idnr AS student FROM Students),
     WHERE classified.classification = 'seminar' AND PassedCourses.course = classified.course 
     GROUP BY student),
 	
-	recommendedCredits AS ( SELECT student, SUM(PassedCourses.credits) AS recommendedCourses
+	recommendedCredits AS ( SELECT student, SUM(credits) AS recommendedCredits
     FROM PassedCourses, RecommendedBranch
-        WHERE PassedCourses.course = RecommendedBranch.course
-        GROUP BY student),
+    WHERE PassedCourses.course = RecommendedBranch.course
+    GROUP BY student),
 	
 
     qualified AS (SELECT stuID.student, mandatoryLeft = 0
     AND recommendedCourses >= 10 AND mathCredits >= 20 AND
-    researchCredits >= 10 AND seminarCourses >0 AND stuID.student IN(SELECT student FROM StudentBranches) AS qualified
+    researchCredits >= 10 AND seminarCourses >= 1 AND stuID.student IN(SELECT student FROM StudentBranches)
+    AS qualified
     FROM stuID, mandatoryLeft, recommendedCredits, mathCredits, researchCredits,
     seminarCourses WHERE stuID.student = mandatoryLeft.student AND stuID.student = recommendedCredits.student
     AND stuID.student = mathCredits.student AND stuID.student = researchCredits.student
     AND stuID.student = seminarCourses.student
     )
-SELECT stuID.student, COALESCE(totalCredits,0) AS totalCredits, mandatoryLeft AS mandatoryLeft,
+SELECT stuID.student, COALESCE(totalCredits,0) AS totalCredits, COALESCE(mandatoryLeft,0) AS mandatoryLeft,
     COALESCE(mathCredits,0) AS mathCredits, COALESCE(researchCredits,0) AS researchCredits,
     COALESCE(seminarCourses,0) AS seminarCourses, COALESCE(qualified,false) AS qualified
 FROM stuID
