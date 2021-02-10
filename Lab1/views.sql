@@ -77,7 +77,8 @@ WITH stuID AS (SELECT idnr AS student FROM Students),
 
     qualified AS (SELECT stuID.student, mandatoryLeft = 0
     AND recommendedCourses >= 10 AND mathCredits >= 20 AND
-    researchCredits >= 10 AND seminarCourses >0 AND stuID.student IN(SELECT student FROM StudentBranches) AS qualified
+    researchCredits >= 10 AND seminarCourses >= 1 AND stuID.student IN(SELECT student FROM StudentBranches)
+    AS qualified
     FROM stuID, mandatoryLeft, recommendedCredits, mathCredits, researchCredits,
     seminarCourses WHERE stuID.student = mandatoryLeft.student AND stuID.student = recommendedCredits.student
     AND stuID.student = mathCredits.student AND stuID.student = researchCredits.student
