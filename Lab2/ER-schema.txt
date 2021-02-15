@@ -1,0 +1,4 @@
+department(_name_, _abbreviation_)
+
+program(_name_, abbreviation)
+name -> department.name
