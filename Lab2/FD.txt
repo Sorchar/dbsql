@@ -1,0 +1,28 @@
+D = {dname, dabbreviation, pname, pabbreviation,
+bname, idnr, sname, studLogin, ccode, cname, credits, clname, capacity, grade, position}
+
+
+dname <-> dabbreviation
+
+pname -> pabbreviation
+
+idnr -> sname
+idnr <-> studLogin
+
+
+sidnr -> pname
+
+
+ccode -> dname, dabbreviation
+
+ccode -> capacity
+
+ccode, student -> position
+
+code, idnr -> grade
+
+idnr, code -> credits
+
+
+
+

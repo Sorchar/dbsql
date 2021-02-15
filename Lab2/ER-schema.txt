@@ -22,7 +22,9 @@ belongsTo(_program_, _student_)
 program -> program.name
 student -> student.idnr
 
-stuBranch(_branch_,_program_,_student_)
+
+(not 100% sure if branch name should be marked as key considering i put it as a weak key in the diagram)
+stuBranch(_branch_,_program_,_student_) 
 (branch, program) -> branch.(branch.name,program.name)
 student -> student.idnr
 
