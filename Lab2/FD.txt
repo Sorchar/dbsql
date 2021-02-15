@@ -10,18 +10,24 @@ idnr -> sname
 idnr <-> studLogin
 
 
-sidnr -> pname
+idnr -> pname
 
+idnr -> bname
 
-ccode -> dname, dabbreviation
+code -> cname
 
-ccode -> capacity
+code -> credits
 
-ccode, student -> position
+code -> clname
+
+code -> dname, dabbreviation
+
+code -> capacity
+
+code, idnr -> position
 
 code, idnr -> grade
 
-idnr, code -> credits
 
 
 
