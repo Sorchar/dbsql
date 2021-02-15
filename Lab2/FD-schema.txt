@@ -1,0 +1,14 @@
+departments(_name_, _abbreviation_)
+
+Program(_name_, abbreviation)
+
+Course(_code_, name, dabbreviation, dname, credits, 
+clname, capacity, prerequisites)
+
+Student(_idnr_, bname, sname, studLogin)
+
+
+xxxx?(_idnr_, _code_, grade, position) 
+idnr -> student.idnr
+code -> Course.code
+
