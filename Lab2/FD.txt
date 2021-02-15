@@ -22,7 +22,9 @@ code -> cname
 
 code -> credits
 
-code -> dname, dabbreviation
+code -> dname
+
+code -> dabbreviation
 
 code -> capacity
 
