@@ -35,12 +35,6 @@ AND MandatoryBranch.program = BasicInformation.program
 EXCEPT SELECT student, course
 FROM PassedCourses;
 
-/*CREATE VIEW RecommendedCredit AS
-SELECT student, SUM (PassedCourses.credits)
-FROM PassedCourses, RecommendedBranch
-WHERE PassedCourses.course = RecommendedBranch.course
-GROUP BY PassedCourses.student
-ORDER BY student;*/
 
 CREATE VIEW PathToGraduation AS
 WITH stuID AS (SELECT idnr AS student FROM Students),
@@ -98,3 +92,7 @@ FROM stuID
     LEFT JOIN researchCredits ON stuID.student = researchCredits.student
     LEFT JOIN seminarCourses ON stuID.student = seminarCourses.student
     LEFT JOIN qualified ON stuID.student = qualified.student;
+
+CREATE VIEW CourseQueuePositions AS
+ SELECT course, student, position AS place
+FROM WaitingList;
