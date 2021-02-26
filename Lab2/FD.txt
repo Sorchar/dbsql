@@ -1,5 +1,5 @@
 D = {dname, dabbreviation, pname, pabbreviation,
-bname, idnr, sname, studLogin, ccode, cname, credits, clname, capacity, grade, position
+bname, idnr, sname, studLogin, code, cname, credits, clname, capacity, grade, position
 
 
 dname -> dabbreviation
@@ -13,6 +13,7 @@ idnr -> sname
 
 idnr -> studLogin
 
+studLogin -> idnr
 
 idnr -> pname
 
@@ -22,20 +23,15 @@ code -> cname
 
 code -> credits
 
-code -> dname
-
 code -> dabbreviation
 
 code -> capacity
 
 code, idnr -> position
 
+code, position -> idnr
+
 code, idnr -> grade
-
-code -> clname
-
-code -> prerequisites
-
 }
 
 

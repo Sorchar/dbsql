@@ -12,3 +12,20 @@ xxxx?(_idnr_, _code_, grade, position)
 idnr -> student.idnr
 code -> Course.code
 
+
+
+(_code_, _clname_, _position_)
+
+
+
+departments(_name_, _abbreviation_)
+
+Course(_code_, cname, credits, capacity, dname)
+
+Program(_pname_, pabbreviation)
+
+Student(_StudLogin_, _idnr_ pname, bname, sname)
+
+unsure of name?((_code_,_studlogin_), (_code, _position_), grade)
+
+LimitedCourse i think(_code_, _clname_ _position_)

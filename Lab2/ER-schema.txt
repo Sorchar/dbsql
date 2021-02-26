@@ -2,14 +2,16 @@ department(_name_, _abbreviation_)
 
 program(_name_, abbreviation)
 
-Branch(_name, _program_)
+Branch(_name_, program)
 program -> program.name
 
 Student(_id_, name, studLogin)
 
 Course(_code_, name, credits)
 
-LimitedCourse(_code_, capacity)
+LimitedCourse(_code_,department,abbreviation,capacity)
+department -> department.name
+abbreviation -> department.abbreviation
 
 Classification(_name_)
 
@@ -55,4 +57,8 @@ course -> course.code
 classified(_course_, _classification_)
 course -> course.code
 classification -> classification.name
+
+prereqs(_pre_, _for_)
+pre -> course.code
+for -> course.code
 
