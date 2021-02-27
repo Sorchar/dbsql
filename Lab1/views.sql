@@ -42,7 +42,6 @@ WHERE PassedCourses.course = RecommendedBranch.course
 GROUP BY PassedCourses.student
 ORDER BY student;*/
 
-
 CREATE VIEW PathToGraduation AS
 WITH stuID AS (SELECT idnr AS student FROM Students),
 
@@ -68,15 +67,33 @@ WITH stuID AS (SELECT idnr AS student FROM Students),
     FROM PassedCourses, Classified
     WHERE classified.classification = 'seminar' AND PassedCourses.course = classified.course 
     GROUP BY student),
-	
-	recommendedCredits AS ( SELECT student, SUM(credits) AS recommendedCredits
+    
+    /*recommendedCredits AS (
+     SELECT student, SUM(credits) AS recommendedCredits
     FROM PassedCourses, RecommendedBranch
     WHERE PassedCourses.course = RecommendedBranch.course
-    GROUP BY student),
-	
+    GROUP BY student),*/
+
+    /*recommendedCredits AS (
+     SELECT student, SUM(credits) AS recommendedCredits
+     FROM StudentBranches , RecommendedBranch
+     WHERE StudentBranches.branch = RecommendedBranch.branch AND StudentBranches.program = RecommendedBranch.program
+     LEFT OUTER JOIN PassedCourses
+     ON PassedCourses.course = RecommendedBranch.course AND PassedCourses.student = StudentBranches.student 
+     GROUP BY student),*/
+     
+     recommendedCredits AS (
+     SELECT StudentBranches.student, SUM(credits) AS recommendedCredits
+     FROM (StudentBranches LEFT JOIN RecommendedBranch ON StudentBranches.branch = RecommendedBranch.branch 
+     AND StudentBranches.program = RecommendedBranch.program) LEFT JOIN PassedCourses ON ( PassedCourses.course = RecommendedBranch.course AND PassedCourses.student = StudentBranches.student)
+     WHERE StudentBranches.student = PassedCourses.student
+     GROUP BY StudentBranches.student),
+
+
+
 
     qualified AS (SELECT stuID.student, mandatoryLeft = 0
-    AND recommendedCourses >= 10 AND mathCredits >= 20 AND
+    AND recommendedCredits >= 10 AND mathCredits >= 20 AND
     researchCredits >= 10 AND seminarCourses >= 1 AND stuID.student IN(SELECT student FROM StudentBranches)
     AS qualified
     FROM stuID, mandatoryLeft, recommendedCredits, mathCredits, researchCredits,

@@ -14,7 +14,7 @@ CREATE TABLE Students(
 	idnr NUMERIC(10),
 	name TEXT NOT NULL,
 	login TEXT NOT NULL UNIQUE,
-	program TEXT REFERENCES Programs(name),
+	program TEXT REFERENCES Program(name),
 	PRIMARY KEY(idnr)
 );
 
@@ -95,7 +95,7 @@ CREATE TABLE RecommendedBranch(
  CREATE TABLE WaitingList(
  	student NUMERIC(10) REFERENCES Students(idnr),
  	course CHAR(6) REFERENCES LimitedCourses(code),
- 	position SERIAL UNIQUE,
+ 	position SERIAL,
  	PRIMARY KEY (student,course) 
  );
 
