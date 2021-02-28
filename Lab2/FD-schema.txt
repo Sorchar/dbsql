@@ -1,31 +1,12 @@
-departments(_name_, _abbreviation_)
-
-Program(_name_, abbreviation)
-
-Course(_code_, name, dabbreviation, dname, credits, 
-clname, capacity, prerequisites)
-
-Student(_idnr_, bname, sname, studLogin)
-
-
-xxxx?(_idnr_, _code_, grade, position) 
-idnr -> student.idnr
-code -> Course.code
-
-
-
-(_code_, _clname_, _position_)
-
-
-
-departments(_name_, _abbreviation_)
+departments(_name_, UNIQUE(abbreviation))
 
 Course(_code_, cname, credits, capacity, dname)
 
 Program(_pname_, pabbreviation)
 
-Student(_StudLogin_, _idnr_ pname, bname, sname)
+Student(UNIQUE(StudLogin), _idnr_ pname, bname, sname)
 
-unsure of name?((_code_,_studlogin_), (_code, _position_), grade)
+unsure of name(UNIQUE((code,studlogin)), _(code, position)_, grade)
 
-LimitedCourse i think(_code_, _clname_ _position_)
+LimitedCourse i think(_code_, UNIQUE(clname), UNIQUE(position))
+

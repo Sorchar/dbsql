@@ -40,215 +40,55 @@ used the online tool
 results is below
 ---------------------------------
 1. Attributes:
-dabbreviation dname
+dname dabbreviation
 Keys:
-dname
 dabbreviation
+dname
 
 Functional dependencies:
-dabbreviation -> dname
 dname -> dabbreviation
+dabbreviation -> dname
 
 
 
 2. Attributes:
-code dabbreviation cname credits clname capacity prerequisites
+code cname credits capacity dname
 Keys:
 code
 
 Functional dependencies:
-code -> dabbreviation
 code -> cname
 code -> credits
-code -> clname
 code -> capacity
-code -> prerequisites
-code prerequisites -> dabbreviation
-code prerequisites -> cname
-code prerequisites -> credits
-code prerequisites -> clname
-code prerequisites -> capacity
-code capacity -> dabbreviation
+code -> dname
+code dname -> cname
+code dname -> credits
+code dname -> capacity
 code capacity -> cname
 code capacity -> credits
-code capacity -> clname
-code capacity -> prerequisites
-code capacity prerequisites -> dabbreviation
-code capacity prerequisites -> cname
-code capacity prerequisites -> credits
-code capacity prerequisites -> clname
-code clname -> dabbreviation
-code clname -> cname
-code clname -> credits
-code clname -> capacity
-code clname -> prerequisites
-code clname prerequisites -> dabbreviation
-code clname prerequisites -> cname
-code clname prerequisites -> credits
-code clname prerequisites -> capacity
-code clname capacity -> dabbreviation
-code clname capacity -> cname
-code clname capacity -> credits
-code clname capacity -> prerequisites
-code clname capacity prerequisites -> dabbreviation
-code clname capacity prerequisites -> cname
-code clname capacity prerequisites -> credits
-code credits -> dabbreviation
+code capacity -> dname
+code capacity dname -> cname
+code capacity dname -> credits
 code credits -> cname
-code credits -> clname
 code credits -> capacity
-code credits -> prerequisites
-code credits prerequisites -> dabbreviation
-code credits prerequisites -> cname
-code credits prerequisites -> clname
-code credits prerequisites -> capacity
-code credits capacity -> dabbreviation
+code credits -> dname
+code credits dname -> cname
+code credits dname -> capacity
 code credits capacity -> cname
-code credits capacity -> clname
-code credits capacity -> prerequisites
-code credits capacity prerequisites -> dabbreviation
-code credits capacity prerequisites -> cname
-code credits capacity prerequisites -> clname
-code credits clname -> dabbreviation
-code credits clname -> cname
-code credits clname -> capacity
-code credits clname -> prerequisites
-code credits clname prerequisites -> dabbreviation
-code credits clname prerequisites -> cname
-code credits clname prerequisites -> capacity
-code credits clname capacity -> dabbreviation
-code credits clname capacity -> cname
-code credits clname capacity -> prerequisites
-code credits clname capacity prerequisites -> dabbreviation
-code credits clname capacity prerequisites -> cname
-code cname -> dabbreviation
+code credits capacity -> dname
+code credits capacity dname -> cname
 code cname -> credits
-code cname -> clname
 code cname -> capacity
-code cname -> prerequisites
-code cname prerequisites -> dabbreviation
-code cname prerequisites -> credits
-code cname prerequisites -> clname
-code cname prerequisites -> capacity
-code cname capacity -> dabbreviation
+code cname -> dname
+code cname dname -> credits
+code cname dname -> capacity
 code cname capacity -> credits
-code cname capacity -> clname
-code cname capacity -> prerequisites
-code cname capacity prerequisites -> dabbreviation
-code cname capacity prerequisites -> credits
-code cname capacity prerequisites -> clname
-code cname clname -> dabbreviation
-code cname clname -> credits
-code cname clname -> capacity
-code cname clname -> prerequisites
-code cname clname prerequisites -> dabbreviation
-code cname clname prerequisites -> credits
-code cname clname prerequisites -> capacity
-code cname clname capacity -> dabbreviation
-code cname clname capacity -> credits
-code cname clname capacity -> prerequisites
-code cname clname capacity prerequisites -> dabbreviation
-code cname clname capacity prerequisites -> credits
-code cname credits -> dabbreviation
-code cname credits -> clname
+code cname capacity -> dname
+code cname capacity dname -> credits
 code cname credits -> capacity
-code cname credits -> prerequisites
-code cname credits prerequisites -> dabbreviation
-code cname credits prerequisites -> clname
-code cname credits prerequisites -> capacity
-code cname credits capacity -> dabbreviation
-code cname credits capacity -> clname
-code cname credits capacity -> prerequisites
-code cname credits capacity prerequisites -> dabbreviation
-code cname credits capacity prerequisites -> clname
-code cname credits clname -> dabbreviation
-code cname credits clname -> capacity
-code cname credits clname -> prerequisites
-code cname credits clname prerequisites -> dabbreviation
-code cname credits clname prerequisites -> capacity
-code cname credits clname capacity -> dabbreviation
-code cname credits clname capacity -> prerequisites
-code cname credits clname capacity prerequisites -> dabbreviation
-code dabbreviation -> cname
-code dabbreviation -> credits
-code dabbreviation -> clname
-code dabbreviation -> capacity
-code dabbreviation -> prerequisites
-code dabbreviation prerequisites -> cname
-code dabbreviation prerequisites -> credits
-code dabbreviation prerequisites -> clname
-code dabbreviation prerequisites -> capacity
-code dabbreviation capacity -> cname
-code dabbreviation capacity -> credits
-code dabbreviation capacity -> clname
-code dabbreviation capacity -> prerequisites
-code dabbreviation capacity prerequisites -> cname
-code dabbreviation capacity prerequisites -> credits
-code dabbreviation capacity prerequisites -> clname
-code dabbreviation clname -> cname
-code dabbreviation clname -> credits
-code dabbreviation clname -> capacity
-code dabbreviation clname -> prerequisites
-code dabbreviation clname prerequisites -> cname
-code dabbreviation clname prerequisites -> credits
-code dabbreviation clname prerequisites -> capacity
-code dabbreviation clname capacity -> cname
-code dabbreviation clname capacity -> credits
-code dabbreviation clname capacity -> prerequisites
-code dabbreviation clname capacity prerequisites -> cname
-code dabbreviation clname capacity prerequisites -> credits
-code dabbreviation credits -> cname
-code dabbreviation credits -> clname
-code dabbreviation credits -> capacity
-code dabbreviation credits -> prerequisites
-code dabbreviation credits prerequisites -> cname
-code dabbreviation credits prerequisites -> clname
-code dabbreviation credits prerequisites -> capacity
-code dabbreviation credits capacity -> cname
-code dabbreviation credits capacity -> clname
-code dabbreviation credits capacity -> prerequisites
-code dabbreviation credits capacity prerequisites -> cname
-code dabbreviation credits capacity prerequisites -> clname
-code dabbreviation credits clname -> cname
-code dabbreviation credits clname -> capacity
-code dabbreviation credits clname -> prerequisites
-code dabbreviation credits clname prerequisites -> cname
-code dabbreviation credits clname prerequisites -> capacity
-code dabbreviation credits clname capacity -> cname
-code dabbreviation credits clname capacity -> prerequisites
-code dabbreviation credits clname capacity prerequisites -> cname
-code dabbreviation cname -> credits
-code dabbreviation cname -> clname
-code dabbreviation cname -> capacity
-code dabbreviation cname -> prerequisites
-code dabbreviation cname prerequisites -> credits
-code dabbreviation cname prerequisites -> clname
-code dabbreviation cname prerequisites -> capacity
-code dabbreviation cname capacity -> credits
-code dabbreviation cname capacity -> clname
-code dabbreviation cname capacity -> prerequisites
-code dabbreviation cname capacity prerequisites -> credits
-code dabbreviation cname capacity prerequisites -> clname
-code dabbreviation cname clname -> credits
-code dabbreviation cname clname -> capacity
-code dabbreviation cname clname -> prerequisites
-code dabbreviation cname clname prerequisites -> credits
-code dabbreviation cname clname prerequisites -> capacity
-code dabbreviation cname clname capacity -> credits
-code dabbreviation cname clname capacity -> prerequisites
-code dabbreviation cname clname capacity prerequisites -> credits
-code dabbreviation cname credits -> clname
-code dabbreviation cname credits -> capacity
-code dabbreviation cname credits -> prerequisites
-code dabbreviation cname credits prerequisites -> clname
-code dabbreviation cname credits prerequisites -> capacity
-code dabbreviation cname credits capacity -> clname
-code dabbreviation cname credits capacity -> prerequisites
-code dabbreviation cname credits capacity prerequisites -> clname
-code dabbreviation cname credits clname -> capacity
-code dabbreviation cname credits clname -> prerequisites
-code dabbreviation cname credits clname prerequisites -> capacity
-code dabbreviation cname credits clname capacity -> prerequisites
+code cname credits -> dname
+code cname credits dname -> capacity
+code cname credits capacity -> dname
 
 
 
@@ -263,54 +103,88 @@ pname -> pabbreviation
 
 
 4. Attributes:
-idnr pname bname sname studLogin
+studLogin pname bname idnr sname
 Keys:
 idnr
+studLogin
 
 Functional dependencies:
+idnr -> studLogin
 idnr -> pname
 idnr -> bname
 idnr -> sname
-idnr -> studLogin
-idnr studLogin -> pname
-idnr studLogin -> bname
-idnr studLogin -> sname
+idnr sname -> studLogin
 idnr sname -> pname
 idnr sname -> bname
-idnr sname -> studLogin
-idnr sname studLogin -> pname
-idnr sname studLogin -> bname
-idnr bname -> pname
-idnr bname -> sname
-idnr bname -> studLogin
-idnr bname studLogin -> pname
-idnr bname studLogin -> sname
-idnr bname sname -> pname
-idnr bname sname -> studLogin
-idnr bname sname studLogin -> pname
-idnr pname -> bname
-idnr pname -> sname
-idnr pname -> studLogin
-idnr pname studLogin -> bname
-idnr pname studLogin -> sname
-idnr pname sname -> bname
-idnr pname sname -> studLogin
-idnr pname sname studLogin -> bname
-idnr pname bname -> sname
-idnr pname bname -> studLogin
-idnr pname bname studLogin -> sname
-idnr pname bname sname -> studLogin
+bname idnr -> studLogin
+bname idnr -> pname
+bname idnr -> sname
+bname idnr sname -> studLogin
+bname idnr sname -> pname
+pname idnr -> studLogin
+pname idnr -> bname
+pname idnr -> sname
+pname idnr sname -> studLogin
+pname idnr sname -> bname
+pname bname idnr -> studLogin
+pname bname idnr -> sname
+pname bname idnr sname -> studLogin
+studLogin -> pname
+studLogin -> bname
+studLogin -> idnr
+studLogin -> sname
+studLogin sname -> pname
+studLogin sname -> bname
+studLogin sname -> idnr
+studLogin idnr -> pname
+studLogin idnr -> bname
+studLogin idnr -> sname
+studLogin idnr sname -> pname
+studLogin idnr sname -> bname
+studLogin bname -> pname
+studLogin bname -> idnr
+studLogin bname -> sname
+studLogin bname sname -> pname
+studLogin bname sname -> idnr
+studLogin bname idnr -> pname
+studLogin bname idnr -> sname
+studLogin bname idnr sname -> pname
+studLogin pname -> bname
+studLogin pname -> idnr
+studLogin pname -> sname
+studLogin pname sname -> bname
+studLogin pname sname -> idnr
+studLogin pname idnr -> bname
+studLogin pname idnr -> sname
+studLogin pname idnr sname -> bname
+studLogin pname bname -> idnr
+studLogin pname bname -> sname
+studLogin pname bname sname -> idnr
+studLogin pname bname idnr -> sname
 
 
 
 5. Attributes:
-idnr code grade position
+code position studLogin grade
 Keys:
-idnr code
+code studLogin
+code position
 
 Functional dependencies:
-idnr code -> grade
-idnr code -> position
-idnr code position -> grade
-idnr code grade -> position
+code studLogin -> position
+code studLogin -> grade
+code studLogin grade -> position
+code position -> studLogin
+code position -> grade
+code position grade -> studLogin
+code position studLogin -> grade
 
+
+
+6. Attributes:
+code clname position
+Keys:
+code clname position
+
+Functional dependencies:
+none

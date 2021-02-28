@@ -1,41 +1,36 @@
-department(_name_, _abbreviation_)
+department(_name_, abbreviation)
 
 program(_name_, abbreviation)
 
 Branch(_name_, program)
 program -> program.name
 
-Student(_id_, name, studLogin)
+Student(_id_, name, studLogin, program, department)
+program -> progam.name
+department -> department.name
 
 Course(_code_, name, credits)
 
-LimitedCourse(_code_,department,abbreviation,capacity)
-department -> department.name
-abbreviation -> department.abbreviation
+LimitedCourse(_code_,capacity)
+code -> course.code
 
 Classification(_name_)
 
-partOf(_department_,_program_, _abbreviation_)(should name / abbr be a tuple?)
+partOf(_department_,_program_)(
 department -> department.name
-abbreviation -> department.abbreviation
 program -> program.name
 
-belongsTo(_program_, _student_)
-program -> program.name
-student -> student.idnr
 
-
-(not 100% sure if branch name should be marked as key considering i put it as a weak key in the diagram)
-stuBranch(_branch_,_program_,_student_) 
-(branch, program) -> branch.(branch.name,program.name)
+stuBranch(branch,program,_student_) 
+(branch, program) -> branch.(name,program)
 student -> student.idnr
 
 recommendedBranch(_branch_,_program_,_course_)
-(branch, program) -> branch.(branch.name,program.name)
+(branch, program) -> branch.(name,program)
 course -> course.code
 
 mandatory(_branch_, _program_, _course_)
-(branch, program) -> branch.(branch.name,program.name)
+(branch, program) -> branch.(name,program)
 course -> course.code
 
 completed(_student_, _course_, grade)
@@ -46,13 +41,9 @@ registered(_student_, _course_)
 student -> student.idnr
 course -> course.code
 
-waitingList(_student_, _course_,position)
+waitingList(_limited_, _course_,position)
 student -> student.idnr
-course -> course.code
-
-hostedBy(_department_, _course_)
-department -> department.name
-course -> course.code
+limited -> limitedcourse.code
 
 classified(_course_, _classification_)
 course -> course.code
@@ -61,4 +52,8 @@ classification -> classification.name
 prereqs(_pre_, _for_)
 pre -> course.code
 for -> course.code
+
+MandatoryProg(_program_, _code_)
+program -> program.name
+code -> course.code
 
