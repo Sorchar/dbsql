@@ -11,5 +11,5 @@ UNIQUE(StudLogin)
 unsureOfName(_code_, _position_,studlogin, grade)
 UNIQUE(code, studLogin)
 
-LimitedCourse(_code_, UNIQUE(clname), UNIQUE(position))
+LimitedCourse(_code_, _clname_, position_)
 

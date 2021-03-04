@@ -42,9 +42,9 @@ registered(_student_, _course_)
 student -> student.idnr
 course -> course.code
 
-waitingList(_limited_, _course_,position)
+waitingList(_student_, _course_,position)
 student -> student.idnr
-limited -> limitedcourse.code
+course -> limitedcourse.code
 
 classified(_course_, _classification_)
 course -> course.code
