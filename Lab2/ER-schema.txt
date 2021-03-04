@@ -2,14 +2,15 @@ department(_name_, abbreviation)
 
 program(_name_, abbreviation)
 
-Branch(_name_, program)
+Branch(_name_, _program_)
 program -> program.name
 
-Student(_id_, name, studLogin, program, department)
+Student(_id_, name, studLogin, program)
 program -> progam.name
+
+Course(_code_,department, name, credits)
 department -> department.name
 
-Course(_code_, name, credits)
 
 LimitedCourse(_code_,capacity)
 code -> course.code

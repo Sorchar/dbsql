@@ -1,12 +1,15 @@
-departments(_name_, UNIQUE(abbreviation))
+departments(_name_, abbreviation)
+UNIQUE(abbreviation)
 
 Course(_code_, cname, credits, capacity, dname)
 
 Program(_pname_, pabbreviation)
 
-Student(UNIQUE(StudLogin), _idnr_ pname, bname, sname)
+Student(StudLogin, _idnr_ pname, bname, sname)
+UNIQUE(StudLogin)
 
-unsure of name(UNIQUE((code,studlogin)), _(code, position)_, grade)
+unsureOfName(_code_, _position_,studlogin, grade)
+UNIQUE(code, studLogin)
 
-LimitedCourse i think(_code_, UNIQUE(clname), UNIQUE(position))
+LimitedCourse(_code_, UNIQUE(clname), UNIQUE(position))
 

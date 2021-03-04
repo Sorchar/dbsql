@@ -108,9 +108,3 @@ CREATE TABLE Prerequisites(
 	forCourse CHAR(6) REFERENCES Courses(code),
 	PRIMARY KEY(precourse, forCourse)
 );
-
-CREATE TABLE HostedBy(
-	name TEXT REFERENCES Department(name),
-	code CHAR(6) REFERENCES Courses(code),
-	PRIMARY KEY(name, code)
-);
