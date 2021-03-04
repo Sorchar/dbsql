@@ -109,8 +109,8 @@ CREATE TABLE Prerequisites(
 	PRIMARY KEY(precourse, forCourse)
 );
 
-CREATE TABLE HostedBy(
-	name TEXT REFERENCES Department(name),
-	code CHAR(6) REFERENCES Courses(code),
-	PRIMARY KEY(name, code)
+CREATE TABLE PartOf (
+	department TEXT REFERENCES Department(name),
+	program TEXT REFERENCES Program(name),
+	PRIMARY KEY (department, program)
 );
