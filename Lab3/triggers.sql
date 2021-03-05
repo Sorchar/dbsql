@@ -30,19 +30,12 @@ capacity := (SELECT limitCourses.capacity FROM LimitedCourses AS limitCourses
 
 --First look for the prerequisites
 
-IF (SELECT courses.prerequisites FROM Courses WHERE Courses.code = NEW.course) NOTNULL
-        THEN
-            FOREACH prereq IN ARRAY (SELECT courses.prerequisites FROM Courses WHERE Courses.code = NEW.course)
-            LOOP
-                IF (prereq NOTNULL) AND prereq NOT IN 
-                (
-                    SELECT PassedCourses.course FROM PassedCourses 
-                    WHERE PassedCourses.student = NEW.student)
-                THEN
-                    RAISE EXCEPTION 'Prerequisites has not been fulfilled';
-                END IF;
-            END LOOP;
-        END IF;
+IF  ((SELECT Count(forCourse) FROM Prerequisites WHERE (forCourse = NEW.course) 
+			AND (forCourse NOT IN (SELECT course FROM PassedCourses WHERE student = NEW.student))) > 0) -- Returns amount preqs that is NOT fulfilled
+
+			THEN RAISE EXCEPTION 'Prerequisite has not been fulfilled';
+		END IF;
+
 
 --Then look at if the student is Registered already or not
 
@@ -87,7 +80,7 @@ DECLARE
 
     studentFromWaitingList INT;
    
-    courseStillFull INT;
+    courseStillFull BOOLEAN;
     
     
 
@@ -98,12 +91,12 @@ BEGIN
 studentFromWaitingList := (SELECT student FROM WaitingList WHERE course = OLD.course AND student = OLD.student);
 
 --Check first if student is in the waiting List
-    IF (EXISTS (studentFromWaitingList) THEN
+  IF (EXISTS(SELECT student FROM WaitingList WHERE Course = OLD.course AND student = OLD.student))  
+        THEN
          WITH student AS (DELETE FROM WaitingList WHERE course = OLD.course AND student = OLD.student RETURNING student, course, position)
             UPDATE WaitingList SET position = position - 1 WHERE course = OLD.course and position > position; 
             RETURN NEW;
     END IF; 
-
 
 -- Then check if the course us full
     IF courseStillFull
