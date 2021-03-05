@@ -1,3 +1,9 @@
+INSERT INTO Department VALUES ('Dep1', 'Dep1');
+
+
+INSERT INTO Program VALUES ('Prog1', 'P');
+INSERT INTO Program VALUES ('Prog2', 'PP');
+
 INSERT INTO Branches VALUES ('B1', 'Prog1');
 INSERT INTO Branches VALUES ('B2', 'Prog1');
 INSERT INTO Branches VALUES ('B1', 'Prog2');
@@ -60,6 +66,4 @@ INSERT INTO Taken VALUES('4444444444', 'CCC444', '5');
 INSERT INTO Taken VALUES('5555555555', 'CCC111', '5');
 INSERT INTO Taken VALUES('5555555555', 'CCC333', '5');
 INSERT INTO Taken VALUES('5555555555', 'CCC444', '5');
-
-
 
