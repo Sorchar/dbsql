@@ -1,29 +1,42 @@
+CREATE TABLE Department(
+	abbreviation TEXT UNIQUE,
+	name TEXT NOT NULL,
+	PRIMARY KEY(name)
+);
+
+CREATE TABLE Program(
+	name TEXT NOT NULL,
+	abbreviation TEXT NOT NULL,
+	PRIMARY KEY (name)
+);
+
 CREATE TABLE Students(
 	idnr NUMERIC(10),
 	name TEXT NOT NULL,
 	login TEXT NOT NULL UNIQUE,
-	program TEXT NOT NULL,
+	program TEXT REFERENCES Program(name),
+	UNIQUE(idnr, program),
 	PRIMARY KEY(idnr)
 );
 
 CREATE TABLE Branches(
 	name TEXT NOT NULL,
-	program TEXT NOT NULL,
+	program TEXT REFERENCES Program(name),
 	PRIMARY KEY(name, program)
 );
 
 CREATE TABLE Courses( 
-	code CHAR(6) NOT NULL, 
-	name TEXT NOT NULL,
-	credits FLOAT CHECK (credits > 0) NOT NULL,
-	department TEXT NOT NULL,
-	prerequisites TEXT , --Tog bort "array"
-	PRIMARY KEY(code)
+    code CHAR(6) NOT NULL, 
+    name TEXT NOT NULL UNIQUE,
+    credits FLOAT NOT NULL,
+	
+    department TEXT REFERENCES Department(name),
+    PRIMARY KEY(code)
 );
 
 CREATE TABLE LimitedCourses(
 	code CHAR(6) REFERENCES Courses(code),
-	capacity INT CHECK (capacity > 0) NOT NULL,
+	capacity INT CHECK (capacity>0) NOT NULL,
 	PRIMARY KEY(code)
 );
 
@@ -32,6 +45,7 @@ CREATE TABLE StudentBranches(
 	branch TEXT NOT NULL,
 	program TEXT NOT NULL,
 	FOREIGN KEY(branch, program) REFERENCES Branches(name,program),
+	FOREIGN KEY(student, program) REFERENCES Students(idnr, program),
 	PRIMARY KEY(student)
 );
 
@@ -48,22 +62,22 @@ CREATE TABLE Classified(
 
 CREATE TABLE MandatoryProgram(
 	course CHAR(6) REFERENCES Courses(code),
-	program TEXT NOT NULL,
+	program TEXT REFERENCES Program(name),
 	PRIMARY KEY(course, program)
 );
 
 CREATE TABLE MandatoryBranch(
 	course CHAR(6) REFERENCES Courses(code),
 	branch TEXT NOT NULL,
-	program TEXT NOT NULL,
-	PRIMARY KEY (course, branch,program),
+	program TEXT REFERENCES Program(name),
+	PRIMARY KEY (course, branch, program),
 	FOREIGN KEY (branch, program) REFERENCES Branches(name,program)
 );
 
 CREATE TABLE RecommendedBranch(
 	course CHAR(6) REFERENCES Courses(code),
 	branch TEXT NOT NULL,
-	program TEXT NOT NULL,
+	program TEXT REFERENCES Program(name),
 	PRIMARY KEY(course, branch,program),
 	FOREIGN key(branch, program) REFERENCES Branches(name, program)
 );
@@ -85,5 +99,14 @@ CREATE TABLE RecommendedBranch(
  	student NUMERIC(10) REFERENCES Students(idnr),
  	course CHAR(6) REFERENCES LimitedCourses(code),
  	position SERIAL,
+ 	UNIQUE(course, position),
  	PRIMARY KEY (student,course) 
  );
+
+
+CREATE TABLE Prerequisites(
+	precourse CHAR(6) REFERENCES Courses(code), --Old Course
+	forCourse CHAR(6) REFERENCES Courses(code), --NEW Course
+	PRIMARY KEY(precourse, forCourse)
+);
+
