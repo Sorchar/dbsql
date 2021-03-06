@@ -17,7 +17,7 @@ CREATE TABLE Courses(
 	name TEXT NOT NULL,
 	credits FLOAT CHECK (credits > 0) NOT NULL,
 	department TEXT NOT NULL,
-	prerequisites TEXT ARRAY, --Behövs för Triggern Part 3
+	prerequisites TEXT , --Tog bort "array"
 	PRIMARY KEY(code)
 );
 
