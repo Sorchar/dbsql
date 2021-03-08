@@ -72,7 +72,7 @@ END;
 $Register_To_Course$ LANGUAGE plpgsql;
 
 --The trigger of register to course
-CREATE TRIGGER register_course
+CREATE TRIGGER Registercourse
        INSTEAD OF INSERT OR UPDATE
        ON Registrations
        FOR EACH ROW EXECUTE FUNCTION RegisterCourse();
