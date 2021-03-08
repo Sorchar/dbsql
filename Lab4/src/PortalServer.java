@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.sql.SQLException;
 import java.util.*;
 import java.nio.file.*;
 import java.net.URLDecoder;
@@ -200,7 +201,12 @@ public class PortalServer {
         
         server.createContext("/reg", (HttpExchange t) -> {
             Map<String,String> input = queryToMap(t);
-            String response = conn.register(input.get("student"),input.get("course"));
+            String response = null;
+            try {
+                response = conn.register(input.get("student"),input.get("course"));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             byte[] bytes = response.getBytes();;
             t.sendResponseHeaders(200, bytes.length);
             OutputStream os = t.getResponseBody();
@@ -210,7 +216,12 @@ public class PortalServer {
         
         server.createContext("/unreg", (HttpExchange t) -> {
             Map<String,String> input = queryToMap(t);
-            String response = conn.unregister(input.get("student"),input.get("course"));
+            String response = null;
+            try {
+                response = conn.unregister(input.get("student"),input.get("course"));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             byte[] bytes = response.getBytes();;
             t.sendResponseHeaders(200, bytes.length);
             OutputStream os = t.getResponseBody();

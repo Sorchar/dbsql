@@ -38,8 +38,10 @@ public class PortalConnection {
         int result = 0;
 
         //Create a statement using connection object
-        PreparedStatement statement = conn.prepareStatement("INSERT INTO Registrations (Student, Course) VALUES (?, ?)");
+        PreparedStatement statement = conn.prepareStatement("INSERT INTO Registrations (Student, Course) VALUES (?, ?);");
         try {
+            //Connection connection = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
+            //System.out.println("Connected to PostgresSQL server"); //Kommer ej hit
             statement.setString(1, student);
             statement.setString(2, courseCode);
 
@@ -64,8 +66,24 @@ public class PortalConnection {
 
 
     // Unregister a student from a course, returns a tiny JSON document (as a String)
-    public String unregister(String student, String courseCode){
-      return "{\"success\":false, \"error\":\"Unregistration is not implemented yet :(\"}";
+    public String unregister(String student, String courseCode) throws SQLException {
+        PreparedStatement statement = conn.prepareStatement("DELETE FROM Registrations WHERE = ? AND COURSE = ?");
+
+        try{
+
+            statement.setString(1, student);
+            statement.setString(2,courseCode);
+
+            System.out.println(statement);
+
+            statement.executeUpdate();
+
+            return "{\"success\":true}";
+
+        }  catch (SQLException e) {
+        return "{\"success\":false, \"error\":\"" + getError(e) + "\"}";
+    }
+        //return "{\"success\":false, \"error\":\"Unregistration is not implemented yet :(\"}";
     }
 
     // Return a JSON document containing lots of information about a student, it should validate against the schema found in information_schema.json

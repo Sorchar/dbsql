@@ -23,27 +23,30 @@ INSERT INTO Registrations VALUES ('2222222222','CCC222');
 INSERT INTO Registrations VALUES ('1111111111','CCC222'); 
 SELECT * FROM Registrations;
 
---Try register for a taken course (Passed) FIXA!!!
+--Try register for a taken course (Passed) Fixat
 INSERT INTO Taken VALUES('4444444444','CCC222','5');
 INSERT INTO Registrations VALUES ('4444444444','CCC222');
 SELECT * FROM Registrations;
 
---Try register for a taken course (Failed) SAKNAR TRIGGERN
+--Try register for a taken course (Failed) Fixat
 INSERT INTO Taken VALUES('333333333','CCC222','U');
 INSERT INTO Registrations VALUES ('3333333333','CCC222');
 SELECT * FROM Registrations;
-
 
 -- prerequisite not met
 INSERT INTO Registrations VALUES ('1111111111','CCC333');  -- KLaga
 SELECT * FROM Registrations;
 
 -- Prerequisite met
-INSERT INTO Taken VALUES('1111111111','CCC222','5');
-INSERT INTO Registrations VALUES ('1111111111','CCC333');
+INSERT INTO Taken VALUES('4444444444','CCC111','5');--kanske för att den inte ens läser in '5'
+INSERT INTO Registrations VALUES ('4444444444','CCC333');
 SELECT * FROM Registrations;
 
+--Insert a value to WL in order to remove att next test (Remove middle (2))
+INSERT INTO Registrations VALUES ('4444444444','CCC222'); 
+
 DELETE FROM WaitingList WHERE student = '3333333333' AND Course = 'CCC222'; --Positionen förändras ej (no update)
+SELeCT * FROM WaitingList;
 
 
 -- Unregistered from unlim course

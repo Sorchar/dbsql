@@ -73,16 +73,6 @@ IF NEW.student IN (SELECT Registrations.student FROM Registrations
         RAISE EXCEPTION 'The student is already registered in this course, welps';
 END IF;
 
--- look if the student has already passed the course
-IF NEW.student IN (SELECT PassedCourses.student from PassedCourses
-    WHERE PassedCourses.student = NEW.student)
-AND
-(NEW.course in (SELECT PassedCourses.course from PassedCourses 
-    WHERE PassedCourses.course = NEW.course))
-    THEN
-        RAISE EXCEPTION 'Student has already passed the course';
-END IF;
-
 
 -- Look at the capacity of the course and att to WL
 IF (SELECT COUNT(student) from Registrations AS regged 
@@ -120,9 +110,7 @@ DECLARE
    
     courseStillFull BOOLEAN;
 
-    fstPosition INT;
-
-    fstStudent INT;
+    
 
 BEGIN 
  courseStillFull := (SELECT Count(student) FROM Registered WHERE course = OLD.course) - 1 
@@ -134,7 +122,7 @@ studentFromWaitingList := (SELECT student FROM WaitingList WHERE course = OLD.co
   IF (EXISTS(SELECT student FROM WaitingList WHERE course = OLD.course AND student = OLD.student))  
         THEN
          WITH student AS (DELETE FROM WaitingList WHERE course = OLD.course AND student = OLD.student RETURNING student, course, position)
-            UPDATE WaitingList SET position = position - 1 WHERE course = OLD.course AND position > position; 
+            UPDATE WaitingList SET position = (position - 1) WHERE course = OLD.course AND position < position; 
             RETURN NEW;
     END IF; 
 
@@ -156,7 +144,7 @@ studentFromWaitingList := (SELECT student FROM WaitingList WHERE course = OLD.co
                      
                      INSERT INTO Registered (student, course) SELECT student, course FROM student;
 
-            UPDATE WaitingList SET position = position - 1 WHERE course = OLD.course;
+            UPDATE WaitingList SET position = position - 1 WHERE course = OLD.course AND student = OLD.student;
 
         DELETE FROM Registered WHERE student = OLD.student AND course = OLD.course;
         RETURN NEW;

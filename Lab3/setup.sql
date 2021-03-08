@@ -31,7 +31,7 @@ CREATE TABLE Program(
 );
 
 CREATE TABLE Students(
-	idnr NUMERIC(10),
+	idnr CHAR(10),
 	name TEXT NOT NULL,
 	login TEXT NOT NULL UNIQUE,
 	program TEXT REFERENCES Program(name),
@@ -60,7 +60,7 @@ CREATE TABLE LimitedCourses(
 );
 
 CREATE TABLE StudentBranches(
-	student NUMERIC(10) REFERENCES Students(idnr),
+	student CHAR(10) REFERENCES Students(idnr),
 	branch TEXT NOT NULL,
 	program TEXT NOT NULL,
 	FOREIGN KEY(branch, program) REFERENCES Branches(name,program),
@@ -102,20 +102,20 @@ CREATE TABLE RecommendedBranch(
 );
 
  CREATE TABLE Registered(
- 	student NUMERIC(10) REFERENCES Students(idnr),
+ 	student CHAR(10) REFERENCES Students(idnr),
  	course CHAR(6) REFERENCES Courses(code),
  	PRIMARY KEY(student, course)
  );
 
  CREATE TABLE Taken(
- 	student NUMERIC(10) REFERENCES Students(idnr),
+ 	student CHAR(10) REFERENCES Students(idnr),
  	course CHAR(6) REFERENCES Courses(code),
  	grade CHAR(1) NOT NULL CHECK(grade IN ('U', '3','4','5')),
  	PRIMARY key(student, course)
  );
 
  CREATE TABLE WaitingList(
- 	student NUMERIC(10) REFERENCES Students(idnr),
+ 	student CHAR(10) REFERENCES Students(idnr),
  	course CHAR(6) REFERENCES LimitedCourses(code),
  	position SERIAL,
  	UNIQUE(course, position),
@@ -136,10 +136,10 @@ CREATE TABLE Prerequisites(
 INSERT INTO Department VALUES ('D1', 'Dep1');
 INSERT INTO Program VALUES ('Prog1', 'P1');
 
-INSERT INTO Students VALUES (1111111111,'S1','ls1','Prog1');
-INSERT INTO Students VALUES (2222222222,'S2','ls2','Prog1');
-INSERT INTO Students VALUES (3333333333,'S3','ls3','Prog1');
-INSERT INTO Students VALUES (4444444444,'S4','ls4','Prog1');
+INSERT INTO Students VALUES ('1111111111','S1','ls1','Prog1');
+INSERT INTO Students VALUES ('2222222222','S2','ls2','Prog1');
+INSERT INTO Students VALUES ('3333333333','S3','ls3','Prog1');
+INSERT INTO Students VALUES ('4444444444','S4','ls4','Prog1');
 
 INSERT INTO Courses VALUES ('CCC111','C1',10,'Dep1');
 INSERT INTO Courses VALUES ('CCC222','C2',20,'Dep1');
@@ -151,7 +151,7 @@ INSERT INTO Prerequisites VALUES('CCC111', 'CCC333');
 INSERT INTO LimitedCourses VALUES ('CCC222', 1);
 INSERT INTO LimitedCourses VALUES ('CCC333', 2);
 
-INSERT INTO Prerequisites VALUES('CCC111', 'CCC333');
+
 
 
 
