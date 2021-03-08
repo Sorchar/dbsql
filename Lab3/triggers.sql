@@ -1,5 +1,7 @@
 /* Write two different triggers in this lab */
 
+
+
 CREATE OR REPLACE FUNCTION RegisterCourse() RETURNS trigger AS $Register_To_Course$
 
 DECLARE 
@@ -14,9 +16,17 @@ reggedStudent INT;
 
 prereq TEXT;
 
+numOFReqCourse INT;
+
+numOFPassCourse INT;
+
 
 begin
 
+numOFReqCourse := (SELECT COUNT(forCourse) FROM Prerequisites WHERE forCourse = NEW.course);
+
+numOFPassCourse := (SELECT COUNT(student) FROM Prerequisites JOIN PassedCourses ON Prerequisites.preCourse = course
+                    WHERE student = NEW.student AND course = NEW.course);
 
 lastPos := (SELECT COALESCE(MAX (waiting.position), 0) 
             FROM WaitingList AS waiting 
@@ -26,23 +36,41 @@ capacity := (SELECT limitCourses.capacity FROM LimitedCourses AS limitCourses
              WHERE NEW.course = limitCourses.code);
 
 
-					
-
 --First look for the prerequisites
 
-IF  ((SELECT Count(forCourse) FROM Prerequisites WHERE (forCourse = NEW.course) 
+IF (numOFReqCourse > numOFPassCourse) THEN
+     RAISE EXCEPTION 'Prerequisite has not been fulfilled';
+		END IF;
+
+
+/*IF  ((SELECT Count(forCourse) FROM Prerequisites WHERE (forCourse = NEW.course) 
 			AND (forCourse NOT IN (SELECT course FROM PassedCourses WHERE student = NEW.student))) > 0) -- Returns amount preqs that is NOT fulfilled
 
 			THEN RAISE EXCEPTION 'Prerequisite has not been fulfilled';
-		END IF;
+		END IF;*/
 
+--Look if the student arleady has done the Course
+IF  (EXISTS(SELECT student FROM Taken 
+            WHERE student = NEW.student
+             AND course = NEW.course AND grade <> 'U'))
+			THEN RAISE EXCEPTION 'The student has already completed the course before';
+END IF;
+
+
+
+--Look at if the student is in the Waiting list
+IF(EXISTS (SELECT student FROM WaitingList 
+           WHERE student = NEW.student AND course = NEW.course))
+			
+            THEN RAISE EXCEPTION 'The student is already in the Waiting list';
+		END IF;
 
 --Then look at if the student is Registered already or not
 
 IF NEW.student IN (SELECT Registrations.student FROM Registrations
     WHERE Registrations.course =  NEW.course) 
 	THEN
-        RAISE EXCEPTION ' the student is already registered in this course, welps';
+        RAISE EXCEPTION 'The student is already registered in this course, welps';
 END IF;
 
 -- look if the student has already passed the course
@@ -55,11 +83,12 @@ AND
         RAISE EXCEPTION 'Student has already passed the course';
 END IF;
 
--- Look at the capacity of the course
+
+-- Look at the capacity of the course and att to WL
 IF (SELECT COUNT(student) from Registrations AS regged 
     WHERE regged.course = NEW.course AND regged.status = 'registered') >= capacity THEN
     
-    INSERT INTO WaitingList VALUES (NEW.student, NEW.course, lastPos +1);
+    INSERT INTO WaitingList VALUES (NEW.student, NEW.course, lastPos + 1);
 ELSE
     INSERT INTO Registered VALUES (NEW.student, NEW.course);
 
@@ -71,8 +100,9 @@ END;
 
 $Register_To_Course$ LANGUAGE plpgsql;
 
+
 --The trigger of register to course
-CREATE TRIGGER register_course
+CREATE TRIGGER Registercourse
        INSTEAD OF INSERT OR UPDATE
        ON Registrations
        FOR EACH ROW EXECUTE FUNCTION RegisterCourse();
@@ -85,14 +115,14 @@ CREATE TRIGGER register_course
 --The function that runs when the trigger to Unregister
 
 CREATE OR REPLACE FUNCTION UnregisterCourse() RETURNS trigger AS $Unregister_To_Course$
-
 DECLARE 
-
-    studentFromWaitingList INT;
+     studentFromWaitingList INT;
    
     courseStillFull BOOLEAN;
-    
-    
+
+    fstPosition INT;
+
+    fstStudent INT;
 
 BEGIN 
  courseStillFull := (SELECT Count(student) FROM Registered WHERE course = OLD.course) - 1 
@@ -101,10 +131,10 @@ BEGIN
 studentFromWaitingList := (SELECT student FROM WaitingList WHERE course = OLD.course AND student = OLD.student);
 
 --Check first if student is in the waiting List
-  IF (EXISTS(SELECT student FROM WaitingList WHERE Course = OLD.course AND student = OLD.student))  
+  IF (EXISTS(SELECT student FROM WaitingList WHERE course = OLD.course AND student = OLD.student))  
         THEN
          WITH student AS (DELETE FROM WaitingList WHERE course = OLD.course AND student = OLD.student RETURNING student, course, position)
-            UPDATE WaitingList SET position = position - 1 WHERE course = OLD.course and position > position; 
+            UPDATE WaitingList SET position = position - 1 WHERE course = OLD.course AND position > position; 
             RETURN NEW;
     END IF; 
 
@@ -122,10 +152,12 @@ studentFromWaitingList := (SELECT student FROM WaitingList WHERE course = OLD.co
             RETURN NEW;
     END IF;
 
-
     WITH student AS (DELETE FROM WaitingList WHERE course = OLD.course AND position = 1 RETURNING student, course)
+                     
                      INSERT INTO Registered (student, course) SELECT student, course FROM student;
+
             UPDATE WaitingList SET position = position - 1 WHERE course = OLD.course;
+
         DELETE FROM Registered WHERE student = OLD.student AND course = OLD.course;
         RETURN NEW;
 END

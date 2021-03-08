@@ -10,6 +10,12 @@ DROP TABLE IF EXISTS Students, Branches, Courses,
 DROP VIEW IF EXISTS BasicInformation, FinishedCourses, 
 PassedCourses, Registrations, UnreadMandatory, RecommendedCredit, 
 PathToGraduation CASCADE;
+
+DROP FUNCTION IF EXISTS RegisterCourse(), UnregisterCourse();
+
+DROP TRIGGER IF EXISTS Registercourse ON Registrations;
+
+DROP TRIGGER IF EXISTS UnregisterCourse ON Registrations;
 ---------------------------------------------------------------------
 -- Tables
 CREATE TABLE Department(
@@ -133,13 +139,17 @@ INSERT INTO Program VALUES ('Prog1', 'P1');
 INSERT INTO Students VALUES (1111111111,'S1','ls1','Prog1');
 INSERT INTO Students VALUES (2222222222,'S2','ls2','Prog1');
 INSERT INTO Students VALUES (3333333333,'S3','ls3','Prog1');
+INSERT INTO Students VALUES (4444444444,'S4','ls4','Prog1');
 
 INSERT INTO Courses VALUES ('CCC111','C1',10,'Dep1');
 INSERT INTO Courses VALUES ('CCC222','C2',20,'Dep1');
 INSERT INTO Courses VALUES ('CCC333','C3',30,'Dep1');
+INSERT INTO Courses VALUES ('CCC444','C4',40,'Dep1');
 
-INSERT INTO LimitedCourses VALUES ('CCC222',1);
-INSERT INTO LimitedCourses VALUES ('CCC333',2);
+INSERT INTO Prerequisites VALUES('CCC111', 'CCC333');
+
+INSERT INTO LimitedCourses VALUES ('CCC222', 1);
+INSERT INTO LimitedCourses VALUES ('CCC333', 2);
 
 INSERT INTO Prerequisites VALUES('CCC111', 'CCC333');
 

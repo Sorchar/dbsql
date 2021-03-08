@@ -23,7 +23,7 @@ INSERT INTO Registrations VALUES ('2222222222','CCC222');
 INSERT INTO Registrations VALUES ('1111111111','CCC222'); 
 SELECT * FROM Registrations;
 
---Try register for a taken course 
+--Try register for a taken course (Passed) FIXA!!!
 INSERT INTO Taken VALUES('4444444444','CCC222','5');
 INSERT INTO Registrations VALUES ('4444444444','CCC222');
 SELECT * FROM Registrations;
@@ -39,7 +39,7 @@ INSERT INTO Registrations VALUES ('1111111111','CCC333');  -- KLaga
 SELECT * FROM Registrations;
 
 -- Prerequisite met
-INSERT INTO Taken VALUES('1111111111','CCC111','5');
+INSERT INTO Taken VALUES('1111111111','CCC222','5');
 INSERT INTO Registrations VALUES ('1111111111','CCC333');
 SELECT * FROM Registrations;
 

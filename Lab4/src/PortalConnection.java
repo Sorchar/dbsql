@@ -5,9 +5,9 @@ import java.util.Properties;
 public class PortalConnection {
 
     // For connecting to the portal database on your local machine
-    static final String DATABASE = "jdbc:postgresql://localhost/portal";
-    static final String USERNAME = "dbs";
-    static final String PASSWORD = "dbs";
+    static final String DATABASE = "jdbc:postgresql://localhost/lab1tda357";
+    static final String USERNAME = "postgres";
+    static final String PASSWORD = "postgres";
 
     // For connecting to the chalmers database server (from inside chalmers)
     // static final String DATABASE = "jdbc:postgresql://brage.ita.chalmers.se/";
@@ -33,16 +33,35 @@ public class PortalConnection {
 
 
     // Register a student on a course, returns a tiny JSON document (as a String)
-    public String register(String student, String courseCode){
-      
-      // placeholder, remove along with this comment. 
-      return "{\"success\":false, \"error\":\"Registration is not implemented yet :(\"}";
-      
-      // Here's a bit of useful code, use it or delete it 
-      // } catch (SQLException e) {
-      //    return "{\"success\":false, \"error\":\""+getError(e)+"\"}";
-      // }     
+    public String register(String student, String courseCode) throws SQLException {
+
+        int result = 0;
+
+        //Create a statement using connection object
+        PreparedStatement statement = conn.prepareStatement("INSERT INTO Registrations (Student, Course) VALUES (?, ?)");
+        try {
+            statement.setString(1, student);
+            statement.setString(2, courseCode);
+
+            System.out.println(statement);
+
+            result = statement.executeUpdate();
+            if (result > 0){
+                System.out.println("Insertion Okay");
+            }
+
+            return "{\"success\":true}";
+
+        } catch (SQLException e) {
+            return "{\"success\":false, \"error\":\"" + getError(e) + "\"}";
+        }
+
+        // placeholder, remove along with this comment.
+      //  return "{\"success\":false, \"error\":\"Registration is not implemented yet :(\"}";
     }
+      
+
+
 
     // Unregister a student from a course, returns a tiny JSON document (as a String)
     public String unregister(String student, String courseCode){
@@ -54,7 +73,7 @@ public class PortalConnection {
         
         try(PreparedStatement st = conn.prepareStatement(
             // replace this with something more useful
-            "SELECT jsonb_build_object('student',idnr,'name',name) AS jsondata FROM BasicInformation WHERE idnr=?"
+            "SELECT jsonb_build_object('student',idnr,'name',name) AS jsondata FROM BasicInformation WHERE idnr=?"//!!!!
             );){
             
             st.setString(1, student);
