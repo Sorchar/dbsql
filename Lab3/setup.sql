@@ -141,6 +141,9 @@ INSERT INTO Courses VALUES ('CCC333','C3',30,'Dep1');
 INSERT INTO LimitedCourses VALUES ('CCC222',1);
 INSERT INTO LimitedCourses VALUES ('CCC333',2);
 
+INSERT INTO Prerequisites VALUES('CCC111', 'CCC333');
+
+
 
 
 -------------------------------------------------------------------------------------------------------------------

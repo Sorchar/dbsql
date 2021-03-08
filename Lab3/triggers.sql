@@ -45,6 +45,16 @@ IF NEW.student IN (SELECT Registrations.student FROM Registrations
         RAISE EXCEPTION ' the student is already registered in this course, welps';
 END IF;
 
+-- look if the student has already passed the course
+IF NEW.student IN (SELECT PassedCourses.student from PassedCourses
+    WHERE PassedCourses.student = NEW.student)
+AND
+(NEW.course in (SELECT PassedCourses.course from PassedCourses 
+    WHERE PassedCourses.course = NEW.course))
+    THEN
+        RAISE EXCEPTION 'Student has already passed the course';
+END IF;
+
 -- Look at the capacity of the course
 IF (SELECT COUNT(student) from Registrations AS regged 
     WHERE regged.course = NEW.course AND regged.status = 'registered') >= capacity THEN
