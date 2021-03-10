@@ -31,7 +31,7 @@ CREATE TABLE Program(
 );
 
 CREATE TABLE Students(
-	idnr CHAR(10),
+	idnr char(10),
 	name TEXT NOT NULL,
 	login TEXT NOT NULL UNIQUE,
 	program TEXT REFERENCES Program(name),
@@ -60,7 +60,7 @@ CREATE TABLE LimitedCourses(
 );
 
 CREATE TABLE StudentBranches(
-	student CHAR(10) REFERENCES Students(idnr),
+	student char(10) REFERENCES Students(idnr),
 	branch TEXT NOT NULL,
 	program TEXT NOT NULL,
 	FOREIGN KEY(branch, program) REFERENCES Branches(name,program),
@@ -102,31 +102,31 @@ CREATE TABLE RecommendedBranch(
 );
 
  CREATE TABLE Registered(
- 	student CHAR(10) REFERENCES Students(idnr),
+ 	student char(10) REFERENCES Students(idnr),
  	course CHAR(6) REFERENCES Courses(code),
  	PRIMARY KEY(student, course)
  );
 
  CREATE TABLE Taken(
- 	student CHAR(10) REFERENCES Students(idnr),
+ 	student char(10) REFERENCES Students(idnr),
  	course CHAR(6) REFERENCES Courses(code),
  	grade CHAR(1) NOT NULL CHECK(grade IN ('U', '3','4','5')),
  	PRIMARY key(student, course)
  );
 
  CREATE TABLE WaitingList(
- 	student CHAR(10) REFERENCES Students(idnr),
+ 	student char(10) REFERENCES Students(idnr),
  	course CHAR(6) REFERENCES LimitedCourses(code),
- 	position SERIAL,
+ 	position serial,
  	UNIQUE(course, position),
  	PRIMARY KEY (student,course) 
  );
 
 
 CREATE TABLE Prerequisites(
-	precourse CHAR(6) REFERENCES Courses(code),
+	preCourse CHAR(6) REFERENCES Courses(code),
 	forCourse CHAR(6) REFERENCES Courses(code),
-	PRIMARY KEY(precourse, forCourse)
+	PRIMARY KEY(preCourse, forCourse)
 );
 
 
@@ -254,6 +254,6 @@ FROM stuID
     LEFT JOIN seminarCourses ON stuID.student = seminarCourses.student
     LEFT JOIN qualified ON stuID.student = qualified.student;
 
-CREATE VIEW CourseQueuePositions AS
- SELECT course, student, position AS place
-FROM WaitingList;
+CREATE OR REPLACE VIEW CourseQueuePositions AS
+(SELECT course, student, row_number() OVER (PARTITION BY course ORDER BY position) AS place
+FROM WaitingList); 

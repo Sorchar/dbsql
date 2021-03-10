@@ -18,19 +18,22 @@ INSERT INTO Registrations VALUES ('1111111111','CCC111');
 
 INSERT INTO Registrations VALUES ('2222222222','CCC222'); 
 
+
+--DELETE FROM Registrations WHERE STUDENT = '1111111111' AND COURSE = 'CCC222';
+
 --Try register if in WL
 
 INSERT INTO Registrations VALUES ('1111111111','CCC222'); 
 SELECT * FROM Registrations;
 
 --Try register for a taken course (Passed) Fixat
-INSERT INTO Taken VALUES('4444444444','CCC222','5');
-INSERT INTO Registrations VALUES ('4444444444','CCC222');
+INSERT INTO Taken VALUES('1111111111','CCC111','5');
+INSERT INTO Registrations VALUES ('1111111111','CCC111');
 SELECT * FROM Registrations;
 
 --Try register for a taken course (Failed) Fixat
-INSERT INTO Taken VALUES('333333333','CCC222','U');
-INSERT INTO Registrations VALUES ('3333333333','CCC222');
+INSERT INTO Taken VALUES('2222222222','CCC222','U'); -- samma student / kurs som tidigare, ta bort han
+INSERT INTO Registrations VALUES ('2222222222','CCC222');
 SELECT * FROM Registrations;
 
 -- prerequisite not met
@@ -43,10 +46,11 @@ INSERT INTO Registrations VALUES ('4444444444','CCC333');
 SELECT * FROM Registrations;
 
 --Insert a value to WL in order to remove att next test (Remove middle (2))
-INSERT INTO Registrations VALUES ('4444444444','CCC222'); 
+INSERT INTO Registrations VALUES ('3333333333','CCC222'); 
+select * from CourseQueuePositions;
 
-DELETE FROM WaitingList WHERE student = '3333333333' AND Course = 'CCC222'; --Positionen förändras ej (no update)
-SELeCT * FROM WaitingList;
+DELETE FROM Registrations WHERE student = '1111111111' AND Course = 'CCC222'; 
+SELeCT * FROM CourseQueuePositions;
 
 
 -- Unregistered from unlim course
@@ -54,7 +58,7 @@ DELETE FROM Registrations WHERE student = '1111111111' AND course = 'CCC111';
 SELECT * FROM Registrations;
 
 --Unregister from limited course 
-DELETE FROM Registrations WHERE student = '1111111111' AND course = 'CCC333';  
+DELETE FROM Registrations WHERE student = '4444444444' AND course = 'CCC333';  
 SELECT * FROM Registrations;
 
 --Unregister from WaitingList
@@ -62,11 +66,12 @@ DELETE FROM Registrations WHERE student = '1111111111' AND course = 'CCC222';
 SELECT * FROM Registrations;
 
 --Unergister from registered 
-DELETE FROM Registrations WHERE student = '2222222222' AND course = 'CCC222'; 
+DELETE FROM Registrations WHERE student = '2222222222' AND Course = 'CCC222'; 
 SELECT * FROM Registrations;
 
 --unregister from an overfull course with the WaitingList
 INSERT INTO Registered VALUES ('2222222222','CCC222'); 
+DELETE FROM Registrations where student = '2222222222' AND Course 'CCC222';
 SELECT * FROM Registrations;
 
 INSERT INTO Registrations VALUES ('1111111111','CCC222'); 
@@ -74,6 +79,7 @@ SELECT * FROM Registrations;
 
 DELETE FROM Registrations WHERE student = '2222222222' AND course = 'CCC222';   
 SELECT * FROM Registrations;
+
 
 
 
