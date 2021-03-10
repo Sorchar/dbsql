@@ -11,24 +11,59 @@ public class TestPortal {
          // Write your tests here. Add/remove calls to pause() as desired. 
          // Use println instead of prettyPrint to get more compact output (if your raw JSON is already readable)
 
-          System.out.println(c.register("1111111111", "CCC111"));
+         // "Det ska gå att göra en injection via webb-portalen, alltså bör det gå att skriva t.ex. "CCC111' OR 'a' = 'a" i fältet för ett kurs, för att ta bort alla kurser."
+
+          prettyPrint(c.unregister("1111111111" ,"CCC333' OR 'a' = 'a"));
           pause();
 
+          prettyPrint(c.getInfo("1111111111")); //Test 1
+          pause();
 
-          System.out.println(c.unregister("2222222222", "CCC333"));
+          prettyPrint(c.register("1111111111", "CCC111")); //Test 2
+          pause();
+
+          prettyPrint(c.unregister("1111111111" ,"CCC111' OR 'a' = 'a"));
+          pause();
+
+          prettyPrint(c.getInfo("1111111111")); //Test 1
+          pause();
+
+          prettyPrint(c.register("1111111111", "CCC111")); //Test 2
+          pause();
+
+          prettyPrint(c.getInfo("1111111111")); //Test 2
+          pause();
+
+          prettyPrint(c.register("1111111111", "CCC111")); //Test 3 -> Should give an error msg
+          pause();
+
+          prettyPrint(c.unregister("1111111111", "CCC111")); //Test 4 unregg
+          pause();
+
+          prettyPrint(c.unregister("1111111111", "CCC111")); //Test 4 unregg agin but get an error msg
+          pause();
+
+          prettyPrint(c.register("1111111111", "'CCC333'")); // Test 5 Reg for a course dont have prereq
+
+          prettyPrint(c.getInfo("1111111111"));
+          pause();
+
+          prettyPrint(c.getInfo("2222222222"));
+          pause();
+
+          prettyPrint(c.unregister("2222222222", "CCC333"));
          pause();
 
          prettyPrint(c.getInfo("2222222222")); 
          pause();
 
-         System.out.println(c.register("2222222222", "CCC333")); 
+         prettyPrint(c.register("2222222222", "CCC333"));
          pause();
 
+
+
          prettyPrint(c.getInfo("2222222222"));
-
-
-
-
+         pause();
 
       
       } catch (ClassNotFoundException e) {
@@ -37,9 +72,7 @@ public class TestPortal {
          e.printStackTrace();
       }
    }
-   
-   
-   
+
    public static void pause() throws Exception{
      System.out.println("PRESS ENTER");
      while(System.in.read() != '\n');
