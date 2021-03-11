@@ -108,6 +108,8 @@ DECLARE
     waitingListPos bigint;
 
     studentwaitlist char(10);
+
+    ducktapeCourse char(6);
     
 
 BEGIN 
@@ -117,6 +119,8 @@ BEGIN
 waitingListPos := (SELECT position FROM WaitingList where course = OLD.course and student = OLD.student);
 
 studentwaitlist := (SELECT student FROM CourseQueuePositions where place = 1 and course = OLD.course);
+
+ducktapeCourse := (SELECT course FROM Registered where Student = OLD.student and Course = OLD.course);
 
 --Check first if student is in the waiting List
   IF (EXISTS(SELECT student FROM WaitingList WHERE course = OLD.course AND student = OLD.student))  
@@ -139,10 +143,11 @@ studentwaitlist := (SELECT student FROM CourseQueuePositions where place = 1 and
             RETURN NEW;
     END IF;
 
-    IF(EXISTS(SELECT code as course FROM LimitedCourses WHERE course = OLD.course))
+    IF(EXISTS(SELECT code as course FROM LimitedCourses WHERE code = OLD.course))
         THEN
+           -- WITH course as (DELETE FROM WaitingList where course = OLD.course and student = studentwaitlist)
             DELETE FROM WaitingList WHERE course = OLD.course AND student = studentwaitlist;
-            INSERT INTO Registered VALUES(studentwaitlist, course); 
+            INSERT INTO Registered VALUES(studentwaitlist, ducktapeCourse); 
             DELETE FROM Registered WHERE student = OLD.student AND course = OLD.course;
             RETURN OLD;
     END IF;

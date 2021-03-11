@@ -71,7 +71,8 @@ SELECT * FROM Registrations;
 
 --unregister from an overfull course with the WaitingList
 INSERT INTO Registered VALUES ('2222222222','CCC222'); 
-DELETE FROM Registrations where student = '2222222222' AND Course 'CCC222';
+DELETE FROM Registrations WHERE student = '2222222222' AND Course = 'CCC222'; 
+DELETE FROM Registrations WHERE student = '1111111111' AND Course = 'CCC222'; 
 SELECT * FROM Registrations;
 
 INSERT INTO Registrations VALUES ('1111111111','CCC222'); 
