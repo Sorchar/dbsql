@@ -11,16 +11,17 @@ import java.sql.Statement;
 public class PortalConnection {
 
     // For connecting to the portal database on your local machine
-    static final String DATABASE = "jdbc:postgresql://localhost/lab1tda357";
-    static final String USERNAME = "postgres";
-    static final String PASSWORD = "postgres";
+    static final String DATABASE = "jdbc:postgresql://localhost/portal";
+    static final String USERNAME = "dbs";
+    static final String PASSWORD = "dbs";
+
 
     // For connecting to the chalmers database server (from inside chalmers)
     // static final String DATABASE = "jdbc:postgresql://brage.ita.chalmers.se/";
     // static final String USERNAME = "tda357_nnn";
     // static final String PASSWORD = "yourPasswordGoesHere";
 
-    java.sql.Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost/lab1tda357", "postgres","postgres");
+    java.sql.Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost/portal", "dbs","dbs");
     // This is the JDBC connection object you will be using in your methods.
   //  private Connection conn;
 

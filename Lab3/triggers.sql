@@ -79,6 +79,7 @@ ELSE
 
 END IF;
 
+
 RETURN NEW;
 
 END;
@@ -152,6 +153,7 @@ ducktapeCourse := (SELECT course FROM Registered where Student = OLD.student and
             RETURN OLD;
     END IF;
 
+        RETURN NEW;
 
         RETURN OLD;
 
