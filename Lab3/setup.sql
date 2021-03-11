@@ -135,25 +135,42 @@ CREATE TABLE Prerequisites(
 
 INSERT INTO Department VALUES ('D1', 'Dep1');
 INSERT INTO Program VALUES ('Prog1', 'P1');
+INSERT INTO Program VALUES ('Prog2', 'P2');
 
 INSERT INTO Students VALUES ('1111111111','S1','ls1','Prog1');
 INSERT INTO Students VALUES ('2222222222','S2','ls2','Prog1');
 INSERT INTO Students VALUES ('3333333333','S3','ls3','Prog1');
 INSERT INTO Students VALUES ('4444444444','S4','ls4','Prog1');
+INSERT INTO Students VALUES ('5555555555','S5', 'ls5', 'Prog2');
+INSERT INTO Students VALUES ('6666666666','S6', 'ls6', 'Prog2');
+INSERT INTO Students VALUES ('7777777777', 'S7', 'ls7', 'Prog2');
+INSERT INTO Students VALUES ('8888888888', 'S8', 'ls8', 'Prog2');
+
 
 INSERT INTO Courses VALUES ('CCC111','C1',10,'Dep1');
 INSERT INTO Courses VALUES ('CCC222','C2',20,'Dep1');
 INSERT INTO Courses VALUES ('CCC333','C3',30,'Dep1');
 INSERT INTO Courses VALUES ('CCC444','C4',40,'Dep1');
+INSERT INTO Courses VALUES ('CCC555','C5',50,'Dep1');
+
+INSERT INTO Taken VALUES('2222222222', 'CCC111', '5');
+INSERT INTO Taken VALUES('5555555555', 'CCC111', '5');
+INSERT INTO Taken VALUES('6666666666', 'CCC111', '5');
+INSERT INTO Taken VALUES('7777777777', 'CCC111', '5');
+INSERT INTO Taken VALUES('8888888888', 'CCC111', '5');
 
 INSERT INTO Prerequisites VALUES('CCC111', 'CCC333');
 
 INSERT INTO LimitedCourses VALUES ('CCC222', 1);
 INSERT INTO LimitedCourses VALUES ('CCC333', 2);
+INSERT INTO LimitedCourses VALUES ('CCC555', 1);
 
 
+INSERT INTO Branches VALUES ('B1', 'Prog1');
+INSERT INTO StudentBranches VALUES ('1111111111','B1', 'Prog1');
 
-
+INSERT INTO Registered VALUES ('8888888888', 'CCC555');
+INSERT INTO Registered VALUES ('6666666666', 'CCC555');
 
 
 -------------------------------------------------------------------------------------------------------------------
@@ -230,8 +247,6 @@ WITH stuID AS (SELECT idnr AS student FROM Students),
      AND StudentBranches.program = RecommendedBranch.program) LEFT JOIN PassedCourses ON ( PassedCourses.course = RecommendedBranch.course AND PassedCourses.student = StudentBranches.student)
      WHERE StudentBranches.student = PassedCourses.student
      GROUP BY StudentBranches.student),
-
-
 
 
     qualified AS (SELECT stuID.student, mandatoryLeft = 0

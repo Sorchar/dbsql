@@ -13,59 +13,117 @@ public class TestPortal {
 
          // "Det ska gå att göra en injection via webb-portalen, alltså bör det gå att skriva t.ex. "CCC111' OR 'a' = 'a" i fältet för ett kurs, för att ta bort alla kurser."
 
-          prettyPrint(c.unregister("1111111111" ,"CCC333' OR 'a' = 'a"));
-          pause();
+
+
+
+          //-----test1------------------------------------
 
           prettyPrint(c.getInfo("1111111111")); //Test 1
           pause();
 
-          prettyPrint(c.register("1111111111", "CCC111")); //Test 2
+
+         //   -----------------------------Test2-------------------------------
+
+
+          prettyPrint("TEST 2");
+
+          prettyPrint(c.register("1111111111", "CCC111"));
           pause();
 
-          prettyPrint(c.unregister("1111111111" ,"CCC111' OR 'a' = 'a"));
-          pause();
-
-          prettyPrint(c.getInfo("1111111111")); //Test 1
-          pause();
-
-          prettyPrint(c.register("1111111111", "CCC111")); //Test 2
-          pause();
-
-          prettyPrint(c.getInfo("1111111111")); //Test 2
-          pause();
-
-          prettyPrint(c.register("1111111111", "CCC111")); //Test 3 -> Should give an error msg
-          pause();
-
-          prettyPrint(c.unregister("1111111111", "CCC111")); //Test 4 unregg
-          pause();
-
-          prettyPrint(c.unregister("1111111111", "CCC111")); //Test 4 unregg agin but get an error msg
-          pause();
-
-          prettyPrint(c.register("1111111111", "'CCC333'")); // Test 5 Reg for a course dont have prereq
 
           prettyPrint(c.getInfo("1111111111"));
           pause();
 
-          prettyPrint(c.getInfo("2222222222"));
+          //   -----------------------------Test3------------------------------------
+
+          prettyPrint("TEST 3");
+          prettyPrint(c.register("1111111111", "CCC111")); //ERROR borde komma up
           pause();
 
-          prettyPrint(c.unregister("2222222222", "CCC333"));
+          //   -----------------------------Test4------------------------------------
+
+          prettyPrint("TEST 4");
+
+          prettyPrint(c.unregister("1111111111", "CCC111"));
+          pause();
+
+
+                                    //--UNREG AGAIN--//
+          prettyPrint(c.unregister("1111111111", "CCC111"));
+          pause();
+
+
+          //   -----------------------------Test5----------------------------------------
+
+          prettyPrint("TEST 5");
+
+          prettyPrint(c.register("1111111111", "CCC333")); // Test 5 Reg for a course dont have prereq
+
+          pause();
+          //   -----------------------------Test6-----------------------------------------
+
+          prettyPrint("TEST 6");
+
+          prettyPrint(c.register("5555555555", "CCC333")); //iNSERION 1
+          pause(); //REG
+
+          prettyPrint(c.register("6666666666", "CCC333")); //iNSERION 2
+          pause(); //REG
+
+          prettyPrint(c.register("7777777777", "CCC333")); //iNSERION 3
+          pause(); //WL
+
+          prettyPrint(c.register("8888888888", "CCC333")); //iNSERION 4
+          pause(); //WL
+
+          //MAY NEED GETINFO HERE BUT IDK
+
+          prettyPrint(c.unregister("5555555555", "CCC333"));
+          pause(); //stud 7 goes to reg, stud 8 first in WL (and ofc stud 5 unregged)
+
+          prettyPrint(c.register("5555555555", "CCC333"));
+          pause(); //Should be last in WL (pos 2)
+
+          //   -----------------------------Test7-----------------------------------------
+
+          prettyPrint("TEST 7");
+
+          //UNREGG ALL
+          prettyPrint(c.unregister("5555555555", "CCC333"));
+          pause();
+
+
+
+          //REGG 2 FIRst
+          prettyPrint(c.register("5555555555", "CCC333"));
+          pause(); //REG
+
+
+
+
+          //   -----------------------------Test8-----------------------------------------
+
+         prettyPrint("TEST 8");
+
          pause();
 
-         prettyPrint(c.getInfo("2222222222")); 
+         prettyPrint(c.register("7777777777", "CCC555"));
+
          pause();
 
-         prettyPrint(c.register("2222222222", "CCC333"));
-         pause();
+         prettyPrint(c.unregister("8888888888", "CCC555"));
+
+        pause();
+
+         //   -----------------------------SQL INJECTION CODE-----------------------------------------
+
+          prettyPrint("TEST 9 SQL");
+
+          pause();
+          prettyPrint(c.unregisterVul("1111111111" ,"x' OR 'a' = 'a"));
+          pause(); // SQL INJECTION CODE
 
 
-
-         prettyPrint(c.getInfo("2222222222"));
-         pause();
-
-      
       } catch (ClassNotFoundException e) {
          System.err.println("ERROR!\nYou do not have the Postgres JDBC driver (e.g. postgresql-42.2.18.jar) in your runtime classpath!");
       } catch (Exception e) {

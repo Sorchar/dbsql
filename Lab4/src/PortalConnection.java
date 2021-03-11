@@ -43,19 +43,15 @@ public class PortalConnection {
 
         int result = 0;
 
-       String Sql_regiter = "INSERT INTO Registrations (?,?)";
+       String Sql_regiter = "INSERT INTO Registrations VALUES (?,?);";
 
-        PreparedStatement statement = conn.prepareStatement(Sql_regiter); //Om error sätt in i Try Claus
-        try {
+
+        try(PreparedStatement statement = conn.prepareStatement(Sql_regiter); ) {
             statement.setString(1, student);
             statement.setString(2, courseCode);
 
-            System.out.println(statement);
-
             result =  statement.executeUpdate(); //Shows how many rows were affected
-            if (result > 0){
-                System.out.println("Insertion Okay");
-            }
+
 
             return "{\"success\":true}";
 
@@ -74,8 +70,8 @@ public class PortalConnection {
 
 
 
-       String Sql_unregister = "DELETE FROM Registrations WHERE student = "+ student +" AND course = " + courseCode +"";
-       // String Sql_unregister = "DELETE FROM Registrations WHERE student = ? AND course = ?";
+       //String Sql_unregister = "DELETE FROM Registrations WHERE student = "+ student +" AND course = " + courseCode +"";
+        String Sql_unregister = "DELETE FROM Registrations WHERE student = ? AND course = ?";
        PreparedStatement statement = conn.prepareStatement(Sql_unregister);
 
        // String sql_unregister = "DELETE FROM Registrations WHERE student = ? AND course = ?";
@@ -89,7 +85,11 @@ public class PortalConnection {
 
             System.out.println(statement);
 
+
             result = statement.executeUpdate();//How many rows were affected
+            if (result == 0){
+                return "{\"success\":false, \"error\":\"" + "Student already Unregged (Does not exist)" + "\"}";
+            }
 
             return "{\"success\":true}";
 
@@ -99,26 +99,54 @@ public class PortalConnection {
         //return "{\"success\":false, \"error\":\"Unregistration is not implemented yet :(\"}";
     }
 
+
+    //_----------------------------------------------------------------------------------------------------------------------
+    // Unregister a student from a course, returns a tiny JSON document (as a String)
+    public String unregisterVul(String student, String courseCode) throws SQLException {
+
+        int result = 0;
+
+        String Sql_unregister = "DELETE FROM Registrations WHERE student = '" + student + "' AND course = '" + courseCode + "';";
+        // String Sql_unregister = "DELETE FROM Registrations WHERE student = ? AND course = ?";
+        PreparedStatement statement = conn.prepareStatement(Sql_unregister);
+
+
+        try{
+           // statement.setString(1, student);
+           // statement.setString(2,courseCode);
+
+            System.out.println(statement);
+
+            result = statement.executeUpdate();//How many rows were affected
+
+            return "{\"success\":true}";
+
+        }  catch (SQLException e) {
+            return "{\"success\":false, \"error\":\"" + getError(e) + "\"}";
+        }
+
+    }
+    //_----------------------------------------------------------------------------------------------------------------------
+
     // Return a JSON document containing lots of information about a student, it should validate against the schema found in information_schema.json
     public String getInfo(String student) throws SQLException{
         
         String Sql_BasicInformation =   "SELECT  idnr, Students.name, login, Students.program, StudentBranches.branch \n" +
                                          "FROM Students\n" +
                                           "LEFT JOIN StudentBranches\n" +
-                                           "ON (StudentBranches.program = Students.program AND \n" +
-                                            " StudentBranches.student = Students.idnr) WHERE Students.idnr = ?";
+                                           "ON (StudentBranches.student = Students.idnr) WHERE Students.idnr = ?";
 
 
-        String Sql_Taken            = "SELECT student, course, grade, credits\n" +
+        String Sql_Taken            = "SELECT name, course, grade, credits\n" +
                                         "FROM Courses, Taken\n" +
                                          "WHERE course = code AND student = ?";
 
 
-        String Sql_RegStatus        = "SELECT student, course, 'registered' as status\n" +
-                                        " FROM Registered \n" +
+        String Sql_RegStatus        = "SELECT name, course, 'registered' as status, NULL AS position\n" +
+                                        " FROM Registered, Courses WHERE course = code AND student = ?\n" +
                                           "UNION\n" +
-                                           "SELECT student, course, 'waiting' as status\n" +
-                                             "FROM WaitingList WHERE student = ?";
+                                           "SELECT student, course, 'waiting' as status, place AS position\n" +
+                                             "FROM CourseQueuePositions, Courses WHERE course = code AND student = ?";
 
         String Sql_PathToGrad       = "SELECT * FROM PathToGraduation WHERE student = ?";
 
@@ -135,10 +163,11 @@ public class PortalConnection {
             
             if(resultset.next() != false){
                 json.put("student", resultset.getString("idnr"));
-                json.put("Students name", resultset.getString("name"));
+                json.put("name", resultset.getString("name"));
                 json.put("login", resultset.getString("login"));
-                json.put("Students program", resultset.getString("program"));
+                json.put("program", resultset.getString("program"));
                 json.put("branch", resultset.getString("branch")); //Osäker på vad händer ifall branch är tom?
+
 
             }
             JSONObject course = new JSONObject();
@@ -148,43 +177,47 @@ public class PortalConnection {
             psSQL.setString(1,student);
             resultset = psSQL.executeQuery();
 
-            while (resultset.next()){ //KSK WHILE
-                course.put("student", resultset.getString("student"));
-                course.put("course",resultset.getString("course"));
-                course.put("grade",resultset.getInt("grade"));
+            while (resultset.next()){
+                course.put("course",resultset.getString("name"));
+                course.put("code", resultset.getString("course"));
                 course.put("credits",resultset.getString("credits"));
+                course.put("grade",resultset.getInt("grade"));
+
 
                 Taken.put(course);
             }
-            json.put("Finished", Taken);
+            json.put("finished", Taken);
 
 
             JSONArray regged = new JSONArray();
 
             psSQL = conn.prepareStatement(Sql_RegStatus);
             psSQL.setString(1, student);
+            psSQL.setString(2, student);
             resultset = psSQL.executeQuery();
 
             if (resultset.next()){
-                course.put("course",resultset.getString("course"));
+                course.put("course",resultset.getString("name"));
+                course.put("code", resultset.getString("course"));
                 course.put("status", resultset.getString("status"));
+                course.put("position", resultset.getString("position"));
+
                 regged.put(course);
             }
 
-            json.put("Registered", regged);
+            json.put("registered", regged);
 
             psSQL = conn.prepareStatement(Sql_PathToGrad);
             psSQL.setString(1, student);
             resultset = psSQL.executeQuery();
 
             if (resultset.next()){
-                json.put("isQualified", resultset.getBoolean("qualified"));
-                json.put("totalCredits", resultset.getFloat("totalCredits"));
-                json.put("researchCredits", resultset.getFloat("researchCredits"));
-                json.put("mathCredits", resultset.getFloat("mathCredits"));
-                json.put("mandatoryLeft", resultset.getInt("mandatoryLeft"));
                 json.put("seminarCourses", resultset.getInt("seminarCourses"));
-                //json.put("recommendedCredits", resultset.getFloat("recommendedCredits"));
+                json.put("mathCredits", resultset.getFloat("mathCredits"));
+                json.put("researchCredits", resultset.getFloat("researchCredits"));
+                json.put("totalCredits", resultset.getFloat("totalCredits"));
+                json.put("canGraduate", resultset.getBoolean("qualified"));
+
             }
 
         } catch (JSONException e) {

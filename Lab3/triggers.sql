@@ -133,14 +133,14 @@ ducktapeCourse := (SELECT course FROM Registered where Student = OLD.student and
     IF courseStillFull
         THEN
         DELETE FROM Registered WHERE student = OLD.student AND course = OLD.course;
-        RETURN NEW;
+        RETURN OLD;
     END IF;
 
 -- Then check that if there is no student in the waiting list
 
     IF (NOT EXISTS(SELECT student FROM WaitingList WHERE course = OLD.course))
             THEN DELETE FROM Registered WHERE student = OLD.student AND course = OLD.course;
-            RETURN NEW;
+            RETURN OLD;
     END IF;
 
     IF(EXISTS(SELECT code as course FROM LimitedCourses WHERE code = OLD.course))
@@ -152,7 +152,8 @@ ducktapeCourse := (SELECT course FROM Registered where Student = OLD.student and
             RETURN OLD;
     END IF;
 
-        RETURN NEW;
+
+        RETURN OLD;
 
 END
 
